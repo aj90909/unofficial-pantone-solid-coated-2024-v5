@@ -11,7 +11,7 @@ This repository contains the scripts and instructions for processing Pantone col
 - `webplinks.txt`: A text file containing generated web links.
 - `Labcolors.jsx`: JavaScript file for extracting Lab colors in Photoshop.
 - `createjsonfromcsv-powershell.txt`: PowerShell script to create a JSON file from a CSV.
-- `encode-acb.js`: Node.js script to encode a JSON file into an ACB file.
+- `encode-acb.js`: Node.js script to encode a JSON file into an ACB file, pulled from https://github.com/atesgoral/acb
 - `Pantone Solid Coated 2024 V5.acb`: The final ACB file.
 
 ## Workflow
