@@ -46,7 +46,7 @@ This repository contains the scripts and instructions for processing Pantone col
 3. Place the `output.json` file in the same directory as `encode-acb.js`.
 
 ### Step 6: Generate ACB File
-(Put everything from this repo in same directory)
+(Put everything from this repo in same directory https://github.com/atesgoral/acb)
 1. Run the `encode-acb.js` script in PowerShell to generate the ACB file.
 
     ```powershell
