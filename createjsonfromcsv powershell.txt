@@ -1,0 +1,39 @@
+# Path to the input CSV file
+$csvPath = "colors.csv"
+
+# Path to the output JSON file
+$jsonOutputPath = "output.json"
+
+# Read the CSV file
+$csvData = Import-Csv -Path $csvPath
+
+# Initialize the JSON structure
+$jsonTemplate = [PSCustomObject]@{
+    id = 3057
+    title = "Pantone Solid Coated 2024"
+    colorNamePrefix = ""
+    colorNamePostfix = ""
+    description = "Pantone Solid Coated 2024 color book"
+    pageSize = 7
+    pageKey = 4
+    colorModel = "Lab"
+    colors = @()
+}
+
+# Populate the colors array with data from the CSV
+foreach ($row in $csvData) {
+    $colorEntry = [PSCustomObject]@{
+        name = $row.PANTONENAME
+        code = $row.UNIQUECODE
+        components = @([int]$row.RED, [int]$row.GREEN, [int]$row.BLUE)
+    }
+    $jsonTemplate.colors += $colorEntry
+}
+
+# Convert the template to JSON
+$jsonOutput = $jsonTemplate | ConvertTo-Json -Depth 10
+
+# Write the JSON output to the file
+$jsonOutput | Out-File -FilePath $jsonOutputPath -Encoding utf8
+
+Write-Output "JSON file created successfully at $jsonOutputPath"

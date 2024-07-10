@@ -1,0 +1,51 @@
+# Define the output file
+$outputFile = "webplinks.txt"
+
+# Clear the output file if it exists
+if (Test-Path $outputFile) {
+    Clear-Content $outputFile
+}
+
+# Function to check if a Pantone image exists
+function Check-Pantone {
+    param (
+        [int]$pantoneNumber
+    )
+
+    $url = "https://www.pantone.com/media/wysiwyg/color-finder/img/pantone-color-chip-$pantoneNumber-c.webp"
+    $tempFilePath = [System.IO.Path]::GetTempFileName()
+
+    try {
+        $response = Invoke-WebRequest -Uri $url -Method Head -UseBasicParsing
+
+        # Check X-Content-Type-Options header
+        $xContentTypeOptions = $response.Headers["X-Content-Type-Options"]
+        if ($xContentTypeOptions -eq "nosniff") {
+            return $false
+        }
+
+        # Clean up temporary file
+        Remove-Item -Path $tempFilePath -Force
+
+        # If header not present or does not indicate nosniff, assume Pantone exists
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+# Define the range of Pantone numbers to check
+$startNumber = 100
+$endNumber = 3000
+
+# Loop through the range and check each Pantone number
+for ($i = $startNumber; $i -le $endNumber; $i++) {
+    if (Check-Pantone -pantoneNumber $i) {
+        Write-Output "Pantone $i exists"
+        Add-Content -Path $outputFile -Value "Pantone $i"
+    } else {
+        Write-Output "Pantone $i does not exist"
+    }
+}
+
+Write-Output "Finished checking Pantone values. Results saved to $outputFile."
